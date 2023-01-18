@@ -1,5 +1,4 @@
 import random
-import pyperclip
 from tkinter import *
 from tkinter import messagebox
 
@@ -49,7 +48,7 @@ def insert_password():
     else:
         password_entry.delete(0, END)
         password_entry.insert(0, generate_password(password_length, num_numbers, num_symbols))
-        pyperclip.copy(password_entry.get())
+        password_entry.clipboard_append(password_entry.get())
 
 
 def save():
