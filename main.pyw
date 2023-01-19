@@ -1,4 +1,5 @@
 import random
+import string
 from tkinter import *
 from tkinter import messagebox
 
@@ -6,22 +7,14 @@ WIDTH = 500
 HEIGHT = 375
 FONT = ("Arial", 11, "normal")
 
+
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
-letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
-           'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
-           'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
-
-
 def generate_password(length=20, num_numbers=1, num_symbols=1):
     num_letters = length - num_numbers - num_symbols
 
-    letters_list = [random.choice(letters) for _ in range(num_letters)]
-    numbers_list = [random.choice(numbers) for _ in range(num_numbers)]
-    symbols_list = [random.choice(symbols) for _ in range(num_symbols)]
-
-    char_list = letters_list + numbers_list + symbols_list
+    char_list = random.choices(string.ascii_letters, k=num_letters) + \
+                random.choices(string.digits, k=num_numbers) + \
+                random.choices(string.punctuation, k=num_symbols)
 
     random.shuffle(char_list)
     return "".join(char_list)
@@ -46,8 +39,12 @@ def insert_password():
                              message="The password length must be greater than or equal to the total numbers and "
                                      "symbols.")
     else:
+        # insert password into text field
         password_entry.delete(0, END)
         password_entry.insert(0, generate_password(password_length, num_numbers, num_symbols))
+
+        # copy password to clipboard
+        password_entry.clipboard_clear()
         password_entry.clipboard_append(password_entry.get())
 
 
@@ -125,7 +122,7 @@ numbers_label = Label(text="Numbers:", font=FONT)
 numbers_label.grid(column=0, row=5, padx=(1, 1), sticky=W)
 
 symbols_default = StringVar(window)
-symbols_default.set("2")
+symbols_default.set("4")
 numbers_spinbox = Spinbox(window, width=3, from_=0, to=6, textvariable=symbols_default)
 numbers_spinbox.grid(column=1, row=5, padx=(1, 1), sticky=W)
 
@@ -134,7 +131,7 @@ symbols_label = Label(text="Symbols:", font=FONT)
 symbols_label.grid(column=0, row=6, padx=(1, 1), sticky=W)
 
 symbols_default = StringVar(window)
-symbols_default.set("2")
+symbols_default.set("4")
 symbols_spinbox = Spinbox(window, width=3, from_=0, to=6, textvariable=symbols_default)
 symbols_spinbox.grid(column=1, row=6, padx=(1, 1), sticky=W)
 
